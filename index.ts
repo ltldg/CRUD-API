@@ -17,6 +17,8 @@ const server = http.createServer((req, res) => {
         createUser(req, res);
     } else if (method === 'GET' && parsedUrl.pathname === '/api/users') {
         getAllUsers(req, res);
+    } else if (method === 'GET' && parsedUrl.pathname === '/api/users') {
+        getUserByID(req, res);
     } else if (method === 'PUT' && parsedUrl.pathname.startsWith('/api/users')) {
         updateUser(req, res);
     } else if (method === 'DELETE' && parsedUrl.pathname.startsWith('/api/users')) {
