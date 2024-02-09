@@ -1,5 +1,5 @@
 import {v4 as uuid4,validate as uuidValidate} from 'uuid';
-import { createUserModel, db, getAll, getId, updateUserModel } from '../model/model';
+import { createUserModel, db, deleteUserModel, getAll, getId, updateUserModel } from '../model/model';
 import { User } from '../util';
 
 
@@ -79,4 +79,20 @@ export function updateUser(req, res) {
     });
 }
 
-
+export function deleteUser(req, res) {
+    const id: string = req.url.split('/')[3];
+    if (!uuidValidate(id)) {
+        res.statusCode = 400;
+        res.end('Invalid user ID');
+        return;
+    }
+    const existingUser = getId(id);
+    if (!existingUser) {
+        res.statusCode = 404;
+        res.end('User not found');
+        return;
+    }
+    deleteUserModel(id);
+    res.statusCode = 204;
+    res.end();
+}

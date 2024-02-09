@@ -37,3 +37,6 @@ export const updateUserModel = (id: string, updatedUser: Partial<User>) => {
     db[id] = { ...db[id], ...updatedUser };
     return db[id];
 }
+export const deleteUserModel = (id: string) => {
+    delete db[id];
+}
