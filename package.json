@@ -9,13 +9,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.11.17",
-    "nodemon": "^3.0.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "nodemon": "^3.0.3"
   },
   "dependencies": {
+    "@types/node": "^20.11.17",
     "@types/uuid": "^9.0.8",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }

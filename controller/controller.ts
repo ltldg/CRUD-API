@@ -47,7 +47,7 @@ export function createUser(req, res) {
             res.end('Missing required fields');
             return;
         }
-        const newUser = createUserModel(user);
+        let newUser = createUserModel(user);
 
         res.statusCode = 201;
         res.end(JSON.stringify(newUser));
@@ -73,7 +73,7 @@ export function updateUser(req, res) {
             res.end('User not found');
             return;
         }
-        const updatedUser = updateUserModel(existingUser, userUpdates);
+        const updatedUser = updateUserModel(id, userUpdates);
         res.statusCode = 200;
         res.end(JSON.stringify(updatedUser));
     });
