@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "start:multi": "tsc && node dist/index.js"
+    "start": "webpack && node dist/bundle.cjs",
+    "start:multi": "webpack && node dist/cluster.cjs"
   },
   "author": "",
   "license": "ISC",

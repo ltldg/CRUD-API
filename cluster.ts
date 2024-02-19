@@ -34,7 +34,6 @@ let numCPUs = os.cpus().length;
       req.pipe(proxy, { end: true });
       i++;
     }).listen(PORT);
-  
     // Fork workers
     for (let i = 0; i < numCPUs - 1; i++) {
       cluster.fork();
