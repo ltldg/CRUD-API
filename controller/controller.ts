@@ -1,6 +1,6 @@
-import {v4 as uuid4,validate as uuidValidate} from 'uuid';
-import { createUserModel, db, deleteUserModel, getAll, getId, updateUserModel } from '../model/model';
-import { User } from '../util';
+import {v4 as uuid4,validate as uuidValidate} from "uuid";
+import { createUserModel, db, deleteUserModel, getAll, getId, updateUserModel } from "../model/model";
+import { User } from "../util";
 
 
 
@@ -11,88 +11,96 @@ export const validateUuid = (id: string): boolean => {
 
 
 
-export const contType = { 'Content-Type': 'application/json' };
+export const contType = { "Content-Type": "application/json" };
 
 
-export function getAllUsers(req, res) {
-    const users = getAll();
-    res.statusCode = 200;
+export async function getAllUsers(req, res) {
+    const users = await getAll();
+    res.writeHead(200, contType);
     res.end(JSON.stringify(users));
 }
 export function getUserByID(req, res) {
-    const id: string = req.url.split('/')[3];
+    const id: string = req.url.split("/")[3];
     const user = getId(id);
     if (!uuidValidate(id)) {
-        res.statusCode = 400;
-        res.end('Invalid user ID');
+        res.writeHead(400, contType);
+        res.write(JSON.stringify({message: 'Invalid user ID'}));
+        res.end();
         return;
     }
     if (!user) {
-        res.statusCode = 404;
-        res.end('User not found');
+        res.writeHead(404, contType);
+        res.write(JSON.stringify({message: 'User not found'}));
+        res.end();
         return;
     }
-    res.statusCode = 200;
+    res.writeHead(200, contType);
     res.end(JSON.stringify(user));
 }
 export function createUser(req, res) {
-    let body = '';
-    req.on('data', chunk => {
+    let body = "";
+    req.on("data", chunk => {
         body += chunk.toString();
     });
-    req.on('end', () => {
+    req.on("end", () => {
         const user = JSON.parse(body);
         if (!user.username || !user.age || !user.hobbies) {
-            res.statusCode = 400;
-            res.end('Missing required fields');
+            res.writeHead(400, contType);
+            res.write(JSON.stringify({message: 'Missing required fields'}));
+            res.end();
             return;
         }
         let newUser = createUserModel(user);
 
-        res.statusCode = 201;
+        res.writeHead(201, contType);
         res.end(JSON.stringify(newUser));
     });
 }
 
 export function updateUser(req, res) {
-    const id: string = req.url.split('/')[3];
-    if (!uuidValidate(id)) {
-        res.statusCode = 400;
-        res.end('Invalid user ID');
-        return;
-    }
-    let body = '';
-    req.on('data', chunk => {
+    const id: string = req.url.split("/")[3];
+
+    let body = "";
+    req.on("data", chunk => {
         body += chunk.toString();
     });
-    req.on('end', () => {
+    req.on("end", () => {
         const userUpdates: Partial<User> = JSON.parse(body);
         const existingUser = getId(id);
+        if (!uuidValidate(id)) {
+            res.writeHead(400, contType);
+            res.write(JSON.stringify({message: 'Invalid user ID'}));
+            res.end();
+            return;
+        }
         if (!existingUser) {
-            res.statusCode = 404;
-            res.end('User not found');
+            res.writeHead(404, contType);
+            res.write(JSON.stringify({message: 'User not found'}));
+            res.end();
             return;
         }
         const updatedUser = updateUserModel(id, userUpdates);
-        res.statusCode = 200;
+        res.writeHead(200, contType);
         res.end(JSON.stringify(updatedUser));
     });
 }
 
 export function deleteUser(req, res) {
-    const id: string = req.url.split('/')[3];
+    const id: string = req.url.split("/")[3];
     if (!uuidValidate(id)) {
-        res.statusCode = 400;
-        res.end('Invalid user ID');
+        res.writeHead(400, contType);
+        res.write(JSON.stringify({message: 'Invalid user ID'}));
+        res.end();
         return;
     }
     const existingUser = getId(id);
     if (!existingUser) {
-        res.statusCode = 404;
-        res.end('User not found');
+        res.writeHead(404, contType);
+        res.write(JSON.stringify({message: 'User not found'}));
+        res.end();
         return;
     }
     deleteUserModel(id);
-    res.statusCode = 204;
+    res.writeHead(204, contType);
     res.end();
 }

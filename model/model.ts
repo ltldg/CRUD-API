@@ -4,9 +4,9 @@ import { User } from "../util";
 export let db: User[] = [
   {
     id: uuidv4(),
-    username: "",
-    age: 0,
-    hobbies: [],
+    username: "mike",
+    age: 11,
+    hobbies: ['walk'],
   },
 ];
 
